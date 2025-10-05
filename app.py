@@ -30,15 +30,23 @@ except Exception as e:
 # App initialization
 app = FastAPI()
 
-# Allow React frontend
+# CONFIGURE CORS
+# 1. Allow your current React development server.
+# 2. Allow a temporary wildcard ("*") for ease of deployment. 
+#    You MUST replace "*" with the actual Vercel URL later for production security.
+origins = [
+    "http://localhost:5173",  # Your current React dev server
+    "https://bharatnatyam-mudra-ml-fastapi.onrender.com", # Your own API URL (sometimes helpful)
+    "*", # TEMPORARY: This is the easiest way to handle the unknown Vercel URL
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # Load the ML model
 model = tf.keras.models.load_model("best_mudra_model.keras")
 IMG_SIZE = (128, 128)
