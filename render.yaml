@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: sih-ml-backend
+    env: python
+    plan: free
+    buildCommand: pip install -r ml/requirements.txt
+    startCommand: uvicorn ml.app:app --host 0.0.0.0 --port 8000
