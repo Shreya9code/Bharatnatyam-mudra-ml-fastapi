@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy dependency file first (for caching)
 COPY requirements.txt .
 
-# Install system dependencies (mediapipe requires these)
+# Install system dependencies (for OpenCV/MediaPipe)
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     libglib2.0-0 \
@@ -16,17 +16,17 @@ RUN apt-get update && apt-get install -y \
     libxrender1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the requirements file into the container
-COPY requirements.txt .
-
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy all app files
 COPY . .
 
-# Expose the port Render will use
-EXPOSE 8000
+# Render automatically sets PORT env var
+ENV PORT=8000
 
-# Start your app
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "${PORT:-8000}"]
+# Expose the port for documentation
+EXPOSE $PORT
+
+# Start FastAPI using Render's PORT
+CMD exec uvicorn app:app --host 0.0.0.0 --port $PORT
