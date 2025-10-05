@@ -37,7 +37,7 @@ app = FastAPI()
 origins = [
     "http://localhost:5173",  # Your current React dev server
     "https://bharatnatyam-mudra-ml-fastapi.onrender.com", # Your own API URL (sometimes helpful)
-    "*", # TEMPORARY: This is the easiest way to handle the unknown Vercel URL
+    #"*", # TEMPORARY: This is the easiest way to handle the unknown Vercel URL
 ]
 
 app.add_middleware(
